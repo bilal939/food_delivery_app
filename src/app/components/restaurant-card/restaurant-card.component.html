@@ -1,0 +1,30 @@
+<ion-card class="restaurant-card">
+  <ion-thumbnail class="img-wrapper">
+    <img [src]="restaurant.dishImage" [alt]="restaurant.dishName" />
+    <ion-badge color="dark" class="rating-badge">
+      <ion-icon name="star-sharp"></ion-icon>
+      {{ restaurant.rating }}
+    </ion-badge>
+  </ion-thumbnail>
+
+  <ion-card-content class="card-body">
+    <div class="title-row">
+      <h2>{{ restaurant.dishName }}</h2>
+      <span class="price">Rs. {{ restaurant.price }}</span>
+    </div>
+
+    <p class="short-name">{{ restaurant.shortName }}</p>
+    <p class="description">{{ restaurant.description }}</p>
+
+    <div class="meta-row">
+      <span class="meta-item">
+        <ion-icon name="location-outline"></ion-icon>
+        {{ restaurant.city }}
+      </span>
+      <span class="meta-item">
+        <ion-icon name="time-outline"></ion-icon>
+        {{ restaurant.distance }}
+      </span>
+    </div>
+  </ion-card-content>
+</ion-card>

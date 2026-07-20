@@ -1,0 +1,26 @@
+@if (loading) {
+  <div class="swiper-skeleton">
+    <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  </div>
+} @else {
+  <swiper-container
+    [slidesPerView]="1.2"
+    [spaceBetween]="16"
+    [pagination]="{ clickable: true }"
+    class="custom-swiper"
+  >
+    @for (slide of slides; track slide.id) {
+      <swiper-slide>
+        <div class="slide-card">
+          <img [src]="slide.image" [alt]="slide.title" />
+          <div class="slide-content">
+            <h3>{{ slide.title }}</h3>
+            @if (slide.description) {
+              <p>{{ slide.description }}</p>
+            }
+          </div>
+        </div>
+      </swiper-slide>
+    }
+  </swiper-container>
+}

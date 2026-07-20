@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title mode="md">
+      <span>Home</span>
+      <ion-icon name="chevron-down-outline"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-slider [slides]="bannerSlides" [loading]="loading"></app-slider>
+  <ion-list lines="none">
+    <ion-list-header class="ion-margin-bottom">
+      <ion-label>
+        <h4>Restaurants NearBy</h4>
+        <p>Discover unique tastes near you</p>
+      </ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <img src="https://picsum.photos/id/10/600/300" />
+      </ion-thumbnail>
+      <ion-label>
+        <h4>Stay Fit</h4>
+        <ion-text color="medium"
+          ><p class="pStyle">Italian Mexican</p></ion-text
+        >
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

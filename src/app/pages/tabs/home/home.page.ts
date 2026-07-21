@@ -15,8 +15,7 @@ import {
   SliderComponent,
 } from 'src/app/components/slider/slider.component';
 import { DUMMY_RESTAURANTS, Restaurant } from 'src/app/models/restaurant.model';
-import { RestaurantCardComponent } from 'src/app/components/restaurant-card/restaurant-card.component';
-import { SkeletonCardsLoadingComponent } from 'src/app/components/skeleton-cards-loading/skeleton-cards-loading.component';
+import { RestaurantListComponent } from 'src/app/components/restaurant-list/restaurant-list.component';
 
 @Component({
   selector: 'app-home',
@@ -32,8 +31,7 @@ import { SkeletonCardsLoadingComponent } from 'src/app/components/skeleton-cards
     FormsModule,
     IonIcon,
     SliderComponent,
-    RestaurantCardComponent,
-    SkeletonCardsLoadingComponent,
+    RestaurantListComponent,
   ],
 })
 export class HomePage implements OnInit {
@@ -59,7 +57,6 @@ export class HomePage implements OnInit {
   ];
   restaurants: Restaurant[] = DUMMY_RESTAURANTS;
   loading = true;
-  skeletonItems = [1, 2, 3, 4, 5];
   constructor() {
     addIcons({ chevronDownOutline });
   }

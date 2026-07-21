@@ -1,0 +1,11 @@
+@if (loading) {
+  @for (item of skeletonItems; track item) {
+    <app-skeleton-cards-loading></app-skeleton-cards-loading>
+  }
+} @else {
+  @for (item of results; track item.id) {
+    <app-restaurant-card [restaurant]="item"></app-restaurant-card>
+  } @empty {
+    <p class="empty-state">No restaurants found nearby.</p>
+  }
+}

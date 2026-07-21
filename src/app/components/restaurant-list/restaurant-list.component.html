@@ -4,7 +4,10 @@
   }
 } @else {
   @for (item of results; track item.id) {
-    <app-restaurant-card [restaurant]="item"></app-restaurant-card>
+    <app-restaurant-card
+      [restaurant]="item"
+      [routerLink]="['/tabs/restaurant-details', item.id]"
+    ></app-restaurant-card>
   } @empty {
     <p class="empty-state">No restaurants found nearby.</p>
   }

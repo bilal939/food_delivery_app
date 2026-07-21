@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
+  IonBadge,
   IonContent,
   IonHeader,
   IonIcon,
@@ -19,13 +20,10 @@ import {
   fastFoodOutline,
   homeOutline,
   informationCircleOutline,
-  library,
   personCircleOutline,
-  playCircle,
-  radio,
-  search,
   searchOutline,
 } from 'ionicons/icons';
+import { CartService } from 'src/app/services/cartservice';
 
 @Component({
   selector: 'app-tabs',
@@ -44,10 +42,13 @@ import {
     CommonModule,
     FormsModule,
     IonTab,
+    IonBadge,
     IonLabel,
   ],
 })
 export class TabsPage implements OnInit {
+  cartData = inject(CartService);
+  totalCount = 0;
   constructor() {
     addIcons({
       homeOutline,
@@ -59,5 +60,9 @@ export class TabsPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.cartData.cart$.subscribe(() => {
+      this.totalCount = this.cartData.getTotalCount();
+    });
+  }
 }

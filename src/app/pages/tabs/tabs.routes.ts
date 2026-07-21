@@ -31,4 +31,11 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'restaurant-details/:restaurantid',
+    loadComponent: () =>
+      import('./restaurant-details/restaurant-details.page').then(
+        (m) => m.RestaurantDetailsPage,
+      ),
+  },
 ];

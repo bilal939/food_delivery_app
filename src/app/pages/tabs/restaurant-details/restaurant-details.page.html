@@ -1,0 +1,89 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ restaurant?.shortName }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="restaurant-header" *ngIf="restaurant">
+    <img [src]="restaurant.dishImage" [alt]="restaurant.shortName" />
+    <div class="header-overlay">
+      <h1>{{ restaurant.shortName }}</h1>
+      <p class="tagline">{{ restaurant.description }}</p>
+      <div class="meta-row">
+        <span class="rating"
+          ><ion-icon name="star"></ion-icon> {{ restaurant.rating }}</span
+        >
+        <span
+          ><ion-icon name="location-outline"></ion-icon> {{ restaurant.city
+          }}</span
+        >
+        <span
+          ><ion-icon name="time-outline"></ion-icon> {{ restaurant.distance
+          }}</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="menu-section"
+    *ngFor="let category of menuCategories; trackBy: trackByCategory"
+  >
+    <h2 class="category-title">{{ category.categoryName }}</h2>
+
+    <ion-item
+      lines="none"
+      class="menu-item"
+      *ngFor="let item of category.items; trackBy: trackByItem"
+    >
+      <ion-thumbnail slot="start">
+        <img [src]="item.image" [alt]="item.name" />
+      </ion-thumbnail>
+
+      <ion-label class="item-info">
+        <h3>{{ item.name }}</h3>
+        <p class="desc">{{ item.description }}</p>
+        <p class="price">Rs. {{ item.price }}</p>
+      </ion-label>
+
+      <div class="stepper" slot="end">
+        <ion-button
+          *ngIf="qty(item) === 0"
+          size="small"
+          fill="outline"
+          (click)="add(item)"
+        >
+          ADD
+        </ion-button>
+
+        <ng-container *ngIf="qty(item) > 0">
+          <ion-button size="small" fill="clear" (click)="remove(item)">
+            <ion-icon name="remove" slot="icon-only"></ion-icon>
+          </ion-button>
+          <span class="qty">{{ qty(item) }}</span>
+          <ion-button size="small" fill="clear" (click)="add(item)">
+            <ion-icon name="add" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ng-container>
+      </div>
+    </ion-item>
+  </div>
+
+  <div class="footer-spacer" *ngIf="cartCount > 0"></div>
+</ion-content>
+
+<ion-footer *ngIf="cartCount > 0" class="cart-footer">
+  <div class="cart-footer-content">
+    <div class="cart-info">
+      <span class="item-count"
+        >{{ cartCount }} item{{ cartCount > 1 ? 's' : '' }}</span
+      >
+      <span class="total-price">Rs. {{ cartTotal }}</span>
+    </div>
+    <ion-button color="success">View Cart</ion-button>
+  </div>
+</ion-footer>

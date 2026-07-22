@@ -1,13 +1,106 @@
-<ion-header [translucent]="true">
+<ion-header mode="md">
   <ion-toolbar>
-    <ion-title>cart</ion-title>
+    <ion-title>Your Cart</ion-title>
+    @if (cartItems()?.length) {
+    <ion-buttons slot="end">
+      <ion-button (click)="confirmClearCart()">
+        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    }
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">cart</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  @if (cartItems()?.length) {
+
+  <ion-list lines="none" class="menu-item">
+    @for (item of cartItems(); track item.item?.id) {
+    <ion-item class="ion-margin-bottom">
+      <ion-thumbnail slot="start">
+        <img [src]="item?.item?.image" [alt]="item?.item?.name" />
+      </ion-thumbnail>
+
+      <ion-label class="item-info">
+        <h3>{{ item.item?.name }}</h3>
+        <p class="desc">{{ item.item?.description }}</p>
+        <p class="price">Rs. {{ item?.item?.price }}</p>
+      </ion-label>
+
+      <div class="stepper" slot="end">
+        <ion-button size="small" fill="clear" (click)="remove(item.item)">
+          <ion-icon name="remove" slot="icon-only"></ion-icon>
+        </ion-button>
+        <span class="qty">{{item.quantity}}</span>
+        <ion-button size="small" fill="clear" (click)="add(item.item)">
+          <ion-icon name="add" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-item>
+    }
+  </ion-list>
+
+  <!-- Bill Summary -->
+  <div class="bill-summary">
+    <h4 class="summary-heading">Bill Details</h4>
+
+    <div class="summary-row">
+      <span class="label">Item Total</span>
+      <span class="value">Rs. {{subTotal}}</span>
+    </div>
+
+    <div class="summary-row">
+      <span class="label">
+        Delivery Charges
+        <ion-icon
+          name="information-circle-outline"
+          class="info-icon"
+        ></ion-icon>
+      </span>
+      <span class="value">Rs. {{ deliveryCharge }}</span>
+    </div>
+
+    <div class="summary-divider"></div>
+
+    <div class="summary-row grand-total">
+      <span class="label">Grand Total</span>
+      <span class="value">Rs. {{ grandTotal }}</span>
+    </div>
+  </div>
+
+  <div class="footer-spacer"></div>
+
+  } @else {
+
+  <!-- Empty Cart State -->
+  <div class="empty-cart">
+    <div class="empty-cart-icon">
+      <ion-icon name="cart-outline"></ion-icon>
+    </div>
+    <h2>Your cart is empty</h2>
+    <p>
+      Looks like you haven't added anything yet.<br />Start adding items to see
+      them here.
+    </p>
+    <ion-button expand="block" class="browse-btn" (click)="goToMenu()">
+      Browse Menu
+    </ion-button>
+  </div>
+
+  }
 </ion-content>
+
+@if (cartItems()?.length) {
+<ion-footer class="cart-footer ion-no-border" [translucent]="true">
+  <div class="address-actions">
+    <ion-button expand="block" fill="outline" class="add-address-btn">
+      <ion-icon name="location-outline" slot="start"></ion-icon>
+      Add Address
+    </ion-button>
+    <ion-button expand="block" fill="solid" class="change-address-btn">
+      <ion-icon name="swap-horizontal-outline" slot="start"></ion-icon>
+      Change Address
+    </ion-button>
+  </div>
+</ion-footer>
+}

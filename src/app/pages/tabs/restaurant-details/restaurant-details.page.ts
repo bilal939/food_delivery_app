@@ -66,8 +66,8 @@ export class RestaurantDetailsPage implements OnInit {
   restaurant: Restaurant | null = null;
   id: number = 0;
   menuCategories: GroupedMenuCategory[] = [];
-  cartTotal = 0;
-  cartCount = 0;
+  cartTotal = this.cartService.total();
+  cartCount = this.cartService.totalCount();
   constructor() {
     addIcons({ locationOutline, star, add, remove });
   }
@@ -80,10 +80,6 @@ export class RestaurantDetailsPage implements OnInit {
 
     const items = DUMMY_MENU_ITEMS.filter((i) => i.restaurantId === id);
     this.menuCategories = this.groupByCategory(items);
-    this.cartService.cart$.subscribe(() => {
-      this.cartTotal = this.cartService.getTotal();
-      this.cartCount = this.cartService.getTotalCount();
-    });
   }
 
   private groupByCategory(items: MenuItem[]): GroupedMenuCategory[] {

@@ -35,3 +35,11 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 // @import "@ionic/angular/css/palettes/dark.system.css";
+
+// global.scss
+.clear-cart-alert {
+  .alert-danger-btn {
+    color: var(--ion-color-danger) !important;
+    font-weight: 700;
+  }
+}

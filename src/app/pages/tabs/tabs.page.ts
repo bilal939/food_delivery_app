@@ -48,7 +48,7 @@ import { CartService } from 'src/app/services/cartservice';
 })
 export class TabsPage implements OnInit {
   cartData = inject(CartService);
-  totalCount = 0;
+  totalCount = this.cartData.totalCount;
   constructor() {
     addIcons({
       homeOutline,
@@ -60,9 +60,5 @@ export class TabsPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.cartData.cart$.subscribe(() => {
-      this.totalCount = this.cartData.getTotalCount();
-    });
-  }
+  ngOnInit() {}
 }

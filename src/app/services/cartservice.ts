@@ -1,6 +1,5 @@
 // services/cart.service.ts
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal, computed } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
 import { MenuItem } from '../models/menu-item.model';
 
@@ -13,17 +12,20 @@ const CART_STORAGE_KEY = 'cart_data';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private cartSubject = new BehaviorSubject<CartItem[]>([]);
-  cart$ = this.cartSubject.asObservable();
+  private cartSignal = signal<CartItem[]>([]);
+
+  cart = this.cartSignal.asReadonly();
+
+  total = computed(() =>
+    this.cartSignal().reduce((sum, c) => sum + c.item.price * c.quantity, 0),
+  );
+
+  totalCount = computed(() =>
+    this.cartSignal().reduce((sum, c) => sum + c.quantity, 0),
+  );
 
   constructor() {
-    // Restore cart from device storage the moment the app boots and
-    // this singleton service is first created.
     this.restoreCart();
-  }
-
-  private get cart(): CartItem[] {
-    return this.cartSubject.value;
   }
 
   private async restoreCart() {
@@ -31,11 +33,9 @@ export class CartService {
     if (value) {
       try {
         const parsed: CartItem[] = JSON.parse(value);
-        this.cartSubject.next(parsed);
+        this.cartSignal.set(parsed);
       } catch {
-        // Corrupted or incompatible stored data — ignore and start fresh
-        // rather than crashing the app on launch.
-        this.cartSubject.next([]);
+        this.cartSignal.set([]);
       }
     }
   }
@@ -48,48 +48,46 @@ export class CartService {
   }
 
   private updateCart(updated: CartItem[]) {
-    this.cartSubject.next(updated);
-    this.persistCart(updated); // fire-and-forget; UI already updated optimistically
+    this.cartSignal.set(updated);
+    this.persistCart(updated); // fire-and-forget
   }
 
   getQuantity(itemId: number): number {
-    return this.cart.find((c) => c.item.id === itemId)?.quantity ?? 0;
+    return this.cartSignal().find((c) => c.item.id === itemId)?.quantity ?? 0;
   }
 
   add(item: MenuItem) {
-    const existing = this.cart.find((c) => c.item.id === item.id);
-    const updated = existing
-      ? this.cart.map((c) =>
-          c.item.id === item.id ? { ...c, quantity: c.quantity + 1 } : c,
-        )
-      : [...this.cart, { item, quantity: 1 }];
-    this.updateCart(updated);
+    this.cartSignal.update((cart) => {
+      const existing = cart.find((c) => c.item.id === item.id);
+      const updated = existing
+        ? cart.map((c) =>
+            c.item.id === item.id ? { ...c, quantity: c.quantity + 1 } : c,
+          )
+        : [...cart, { item, quantity: 1 }];
+      this.persistCart(updated);
+      return updated;
+    });
   }
 
   remove(item: MenuItem) {
-    const existing = this.cart.find((c) => c.item.id === item.id);
-    if (!existing) return;
+    this.cartSignal.update((cart) => {
+      const existing = cart.find((c) => c.item.id === item.id);
+      if (!existing) return cart;
 
-    const updated =
-      existing.quantity <= 1
-        ? this.cart.filter((c) => c.item.id !== item.id)
-        : this.cart.map((c) =>
-            c.item.id === item.id ? { ...c, quantity: c.quantity - 1 } : c,
-          );
+      const updated =
+        existing.quantity <= 1
+          ? cart.filter((c) => c.item.id !== item.id)
+          : cart.map((c) =>
+              c.item.id === item.id ? { ...c, quantity: c.quantity - 1 } : c,
+            );
 
-    this.updateCart(updated);
-  }
-
-  getTotal(): number {
-    return this.cart.reduce((sum, c) => sum + c.item.price * c.quantity, 0);
-  }
-
-  getTotalCount(): number {
-    return this.cart.reduce((sum, c) => sum + c.quantity, 0);
+      this.persistCart(updated);
+      return updated;
+    });
   }
 
   async clear() {
-    this.cartSubject.next([]);
+    this.cartSignal.set([]);
     await Preferences.remove({ key: CART_STORAGE_KEY });
   }
 }

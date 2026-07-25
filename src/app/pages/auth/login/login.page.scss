@@ -1,0 +1,56 @@
+.container {
+  margin-top: 20px;
+  padding-inline: 20px;
+  .image {
+    object-fit: cover;
+    overflow: hidden;
+    height: 20rem;
+    width: 100%;
+  }
+  .details {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    h4 {
+      font-weight: bold;
+      font-size: 2rem;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: #818c9b;
+      font-size: medium;
+    }
+  }
+  .form {
+    margin-block: 20px;
+    flex-direction: column;
+    display: flex;
+    gap: 10px;
+
+    .forgot {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .inputarea {
+      border: 1px solid var(--ion-color-light-shade);
+      border-radius: 50px;
+    }
+    .errorText {
+      font-weight: 500;
+      font-size: 0.7rem;
+    }
+    ion-button {
+      margin-top: 3vh;
+      height: 40px;
+      font-weight: bold;
+      text-transform: capitalize;
+      font-size: 0.9rem;
+      gap: 10px;
+    }
+  }
+}

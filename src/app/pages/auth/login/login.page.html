@@ -1,0 +1,86 @@
+<ion-content>
+  <div class="container">
+    <ion-img
+      class="image"
+      src="assets/images/login.png"
+      alt="The Wisconsin State Capitol building in Madison, WI at night"
+    ></ion-img>
+    <div class="details">
+      <h4>Login</h4>
+      <p>Welcome Back! Please enter your details</p>
+    </div>
+    <form #f="ngForm" (ngSubmit)="onSubmit($event)" class="form">
+      <div class="inputContainer">
+        <ion-item color="light" class="inputarea">
+          <ion-icon name="mail" slot="start" color="primary"></ion-icon>
+          <ion-input
+            type="email"
+            name="email"
+            ngModel
+            #emailCtrl="ngModel"
+            placeholder="Enter your Email"
+            email
+            required
+          ></ion-input>
+        </ion-item>
+        <ion-text
+          color="danger"
+          class="errorText"
+          *ngIf="!emailCtrl.valid && emailCtrl.touched"
+        >
+          <p>Pleae enter a valid email address</p>
+        </ion-text>
+      </div>
+
+      <div class="inputContainer">
+        <ion-item color="light  inputarea">
+          <ion-icon name="key" slot="start" color="primary"></ion-icon>
+          <ion-input
+            [type]="type ? 'text' : 'password'"
+            name="password"
+            ngModel
+            #passCtrl="ngModel"
+            placeholder="Enter your password"
+            min
+            password
+            required
+            minlength="8"
+          ></ion-input>
+          <ion-icon
+            [name]="type ? 'eye' : 'eye-off-outline'"
+            slot="end"
+            color="primary"
+            (click)="changeType()"
+          ></ion-icon>
+        </ion-item>
+        <ion-text
+          color="danger"
+          class="errorText"
+          *ngIf="!passCtrl.valid && passCtrl.touched"
+        >
+          <p>Password must be minimum 8 characters long</p>
+        </ion-text>
+      </div>
+
+      <ion-text class="forgot ion-text-right" color="primary"
+        >Forgot Password?</ion-text
+      >
+
+      <ion-button
+        expand="block"
+        shape="round"
+        type="submit"
+        [disabled]="!f.valid"
+      >
+        <ion-spinner *ngIf="isLoading" slot="start"></ion-spinner>
+        <span *ngIf="!isLoading">Submit</span>
+      </ion-button>
+    </form>
+    <ion-text color="primary" class="ion-text-center">
+      <p>
+        Don't have an account ?
+        <b [routerLink]="['/register']">Sign Up</b>
+      </p>
+    </ion-text>
+  </div>
+</ion-content>

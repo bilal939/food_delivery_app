@@ -38,6 +38,9 @@ import {
   person,
 } from 'ionicons/icons';
 import { RouterLink } from '@angular/router';
+import { Auth } from 'src/app/services/auth/auth';
+import { ToastService } from 'src/app/services/toast/toast-service';
+import { finalize } from 'rxjs';
 
 // Cross-field validator: confirmPassword must match password
 function passwordMatchValidator(): ValidatorFn {
@@ -90,7 +93,11 @@ export class RegisterPage implements OnInit {
   // prevents picking a future date of birth
   maxDate = new Date().toISOString();
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authservice: Auth,
+    private toast: ToastService,
+  ) {
     addIcons({
       person,
       mail,
@@ -126,7 +133,6 @@ export class RegisterPage implements OnInit {
   }
 
   onDateChange(event: DatetimeCustomEvent, dobModal: IonModal): void {
-    console.log('eve', event);
     this.registerForm.patchValue({ dob: event.detail.value });
     this.registerForm.get('dob')?.markAsTouched();
     dobModal.dismiss();
@@ -159,8 +165,24 @@ export class RegisterPage implements OnInit {
       return;
     }
     this.isLoading = true;
-    console.log(this.registerForm.value);
-    // TODO: call your auth service here
-    setTimeout(() => (this.isLoading = false), 1500);
+    this.authservice
+      .register(this.registerForm.value)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        }),
+      )
+      .subscribe({
+        next: (res) => {
+          if (res.data) {
+            this.toast.success(res.message);
+          }
+        },
+        error: (err: unknown | any) => {
+          this.toast.error(
+            err.error?.message || err?.error?.error || 'Registration Failed',
+          );
+        },
+      });
   }
 }

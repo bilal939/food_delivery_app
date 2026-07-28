@@ -8,7 +8,6 @@
     <form #f="ngForm" (ngSubmit)="onSubmit($event)" class="form">
       <div class="inputContainer">
         <ion-item color="light" class="inputarea">
-          <ion-icon name="mail" slot="start" color="primary"></ion-icon>
           <ion-input
             type="email"
             name="email"
@@ -17,7 +16,9 @@
             placeholder="Enter your Email"
             email
             required
-          ></ion-input>
+          >
+            <ion-icon name="mail" slot="start" color="primary"></ion-icon>
+          </ion-input>
         </ion-item>
         <ion-text
           color="danger"
@@ -30,7 +31,6 @@
 
       <div class="inputContainer">
         <ion-item color="light  inputarea">
-          <ion-icon name="key" slot="start" color="primary"></ion-icon>
           <ion-input
             type="password"
             name="password"
@@ -43,6 +43,7 @@
             value="NeverGonnaGiveYouUp"
             minlength="8"
           >
+            <ion-icon name="key" slot="start" color="primary"></ion-icon>
             <ion-input-password-toggle slot="end"></ion-input-password-toggle>
           </ion-input>
         </ion-item>

@@ -10,12 +10,13 @@
       <!-- Name -->
       <div class="inputContainer">
         <ion-item color="light" class="inputarea">
-          <ion-icon name="person" slot="start" color="primary"></ion-icon>
           <ion-input
             type="text"
             formControlName="name"
             placeholder="Enter your name"
-          ></ion-input>
+          >
+            <ion-icon name="person" slot="start" color="primary"></ion-icon>
+          </ion-input>
         </ion-item>
         <ion-text
           color="danger"
@@ -32,12 +33,13 @@
       <!-- Email -->
       <div class="inputContainer">
         <ion-item color="light" class="inputarea">
-          <ion-icon name="mail" slot="start" color="primary"></ion-icon>
           <ion-input
             type="email"
             formControlName="email"
             placeholder="Enter your Email"
-          ></ion-input>
+          >
+            <ion-icon name="mail" slot="start" color="primary"></ion-icon>
+          </ion-input>
         </ion-item>
         <ion-text
           color="danger"
@@ -54,12 +56,13 @@
       <!-- Password -->
       <div class="inputContainer">
         <ion-item color="light" class="inputarea">
-          <ion-icon name="key" slot="start" color="primary"></ion-icon>
           <ion-input
             type="password"
             formControlName="password"
             placeholder="Enter your password"
           >
+            <ion-icon name="key" slot="start" color="primary"></ion-icon>
+
             <ion-input-password-toggle slot="end"></ion-input-password-toggle>
           </ion-input>
         </ion-item>
@@ -78,12 +81,13 @@
       <!-- Confirm Password -->
       <div class="inputContainer">
         <ion-item color="light" class="inputarea">
-          <ion-icon name="key" slot="start" color="primary"></ion-icon>
           <ion-input
             type="password"
             formControlName="confirmPassword"
             placeholder="Confirm your password"
           >
+            <ion-icon name="key" slot="start" color="primary"></ion-icon>
+
             <ion-input-password-toggle slot="end"></ion-input-password-toggle>
           </ion-input>
         </ion-item>
@@ -109,16 +113,17 @@
           id="open-dob-modal"
           button="true"
         >
-          <ion-icon
-            name="calendar-outline"
-            slot="start"
-            color="primary"
-          ></ion-icon>
           <ion-input
             readonly="true"
             [value]="formattedDob()"
             placeholder="Select your date of birth"
-          ></ion-input>
+          >
+            <ion-icon
+              name="calendar-outline"
+              slot="start"
+              color="primary"
+            ></ion-icon>
+          </ion-input>
         </ion-item>
         <ion-text
           color="danger"
@@ -137,16 +142,17 @@
           id="open-gender-sheet"
           button="true"
         >
-          <ion-icon
-            name="male-female-outline"
-            slot="start"
-            color="primary"
-          ></ion-icon>
           <ion-input
             readonly="true"
             [value]="formattedGender()"
             placeholder="Select your gender"
-          ></ion-input>
+          >
+            <ion-icon
+              name="male-female-outline"
+              slot="start"
+              color="primary"
+            ></ion-icon>
+          </ion-input>
         </ion-item>
         <ion-text
           color="danger"

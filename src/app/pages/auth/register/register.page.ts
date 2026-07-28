@@ -1,20 +1,166 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import {
+  DatetimeCustomEvent,
+  IonButton,
+  IonContent,
+  IonDatetime,
+  IonIcon,
+  IonInput,
+  IonInputPasswordToggle,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonModal,
+  IonSpinner,
+  IonText,
+} from '@ionic/angular/standalone';
+import { AuthheaderComponent } from 'src/app/components/authheader/authheader.component';
+import { addIcons } from 'ionicons';
+import {
+  calendarOutline,
+  checkmarkOutline,
+  eye,
+  eyeOffOutline,
+  key,
+  mail,
+  maleFemaleOutline,
+  person,
+} from 'ionicons/icons';
+import { RouterLink } from '@angular/router';
+
+// Cross-field validator: confirmPassword must match password
+function passwordMatchValidator(): ValidatorFn {
+  return (group: AbstractControl): ValidationErrors | null => {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    if (password && confirmPassword && password !== confirmPassword) {
+      group.get('confirmPassword')?.setErrors({ mismatch: true });
+      return { mismatch: true };
+    }
+    return null;
+  };
+}
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    IonContent,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AuthheaderComponent,
+    IonItem,
+    IonIcon,
+    IonText,
+    IonInput,
+    RouterLink,
+    IonInputPasswordToggle,
+    IonButton,
+    IonModal,
+    IonDatetime,
+    IonSpinner,
+    IonList,
+    IonLabel,
+  ],
 })
 export class RegisterPage implements OnInit {
+  registerForm!: FormGroup;
+  isLoading = false;
 
-  constructor() { }
+  genderOptions = [
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+    { label: 'Other', value: 'other' },
+  ];
 
-  ngOnInit() {
+  // prevents picking a future date of birth
+  maxDate = new Date().toISOString();
+
+  constructor(private fb: FormBuilder) {
+    addIcons({
+      person,
+      mail,
+      key,
+      eye,
+      eyeOffOutline,
+      calendarOutline,
+      maleFemaleOutline,
+      checkmarkOutline,
+    });
   }
 
+  ngOnInit(): void {
+    this.initForm();
+  }
+
+  initForm(): void {
+    this.registerForm = this.fb.group(
+      {
+        name: ['', [Validators.required, Validators.minLength(3)]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+        dob: ['', [Validators.required]],
+        gender: ['', [Validators.required]],
+      },
+      { validators: passwordMatchValidator() },
+    );
+  }
+
+  get f() {
+    return this.registerForm.controls;
+  }
+
+  onDateChange(event: DatetimeCustomEvent, dobModal: IonModal): void {
+    console.log('eve', event);
+    this.registerForm.patchValue({ dob: event.detail.value });
+    this.registerForm.get('dob')?.markAsTouched();
+    dobModal.dismiss();
+  }
+
+  selectGender(value: string, sheetModal: IonModal): void {
+    this.registerForm.patchValue({ gender: value });
+    this.registerForm.get('gender')?.markAsTouched();
+    sheetModal.dismiss();
+  }
+
+  formattedDob(): string {
+    const dob = this.registerForm.get('dob')?.value;
+    if (!dob) return '';
+    return new Date(dob).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  }
+
+  formattedGender(): string {
+    const gender = this.registerForm.get('gender')?.value;
+    return this.genderOptions.find((g) => g.value === gender)?.label ?? '';
+  }
+
+  onSubmit(): void {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+    this.isLoading = true;
+    console.log(this.registerForm.value);
+    // TODO: call your auth service here
+    setTimeout(() => (this.isLoading = false), 1500);
+  }
 }

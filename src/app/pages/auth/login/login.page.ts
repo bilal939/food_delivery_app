@@ -9,6 +9,7 @@ import {
   IonIcon,
   IonImg,
   IonInput,
+  IonInputPasswordToggle,
   IonItem,
   IonSpinner,
   IonText,
@@ -18,6 +19,7 @@ import {
 import { addIcons } from 'ionicons';
 import { eye, eyeOffOutline, key, mail } from 'ionicons/icons';
 import { RouterLink } from '@angular/router';
+import { AuthheaderComponent } from 'src/app/components/authheader/authheader.component';
 
 @Component({
   selector: 'app-login',
@@ -39,17 +41,14 @@ import { RouterLink } from '@angular/router';
     IonSpinner,
     IonButton,
     RouterLink,
+    AuthheaderComponent,
+    IonInputPasswordToggle,
   ],
 })
 export class LoginPage implements OnInit {
-  type: boolean = false;
   isLoading: boolean = false;
   constructor() {
     addIcons({ mail, key, eye, eyeOffOutline });
-  }
-
-  changeType() {
-    this.type = !this.type;
   }
 
   ngOnInit() {}

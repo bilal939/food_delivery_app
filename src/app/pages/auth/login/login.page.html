@@ -1,14 +1,10 @@
 <ion-content>
   <div class="container">
-    <ion-img
-      class="image"
-      src="assets/images/login.png"
-      alt="The Wisconsin State Capitol building in Madison, WI at night"
-    ></ion-img>
-    <div class="details">
-      <h4>Login</h4>
-      <p>Welcome Back! Please enter your details</p>
-    </div>
+    <app-authheader
+      title="Login"
+      subtitle="Welcome Back! Please enter your details"
+      imgSrc="assets/images/login.png"
+    ></app-authheader>
     <form #f="ngForm" (ngSubmit)="onSubmit($event)" class="form">
       <div class="inputContainer">
         <ion-item color="light" class="inputarea">
@@ -36,7 +32,7 @@
         <ion-item color="light  inputarea">
           <ion-icon name="key" slot="start" color="primary"></ion-icon>
           <ion-input
-            [type]="type ? 'text' : 'password'"
+            type="password"
             name="password"
             ngModel
             #passCtrl="ngModel"
@@ -44,14 +40,11 @@
             min
             password
             required
+            value="NeverGonnaGiveYouUp"
             minlength="8"
-          ></ion-input>
-          <ion-icon
-            [name]="type ? 'eye' : 'eye-off-outline'"
-            slot="end"
-            color="primary"
-            (click)="changeType()"
-          ></ion-icon>
+          >
+            <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+          </ion-input>
         </ion-item>
         <ion-text
           color="danger"

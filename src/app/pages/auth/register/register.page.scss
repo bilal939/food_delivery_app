@@ -1,0 +1,27 @@
+.container {
+  margin-top: 20px;
+  padding-inline: 20px;
+  .form {
+    margin-block: 20px;
+    flex-direction: column;
+    display: flex;
+    gap: 10px;
+
+    .inputarea {
+      border: 1px solid var(--ion-color-light-shade);
+      border-radius: 50px;
+    }
+    .errorText {
+      font-weight: 500;
+      font-size: 0.7rem;
+    }
+    ion-button {
+      margin-top: 3vh;
+      height: 40px;
+      font-weight: bold;
+      text-transform: capitalize;
+      font-size: 0.9rem;
+      gap: 10px;
+    }
+  }
+}

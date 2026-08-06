@@ -20,6 +20,7 @@ import { addIcons } from 'ionicons';
 import { eye, eyeOffOutline, key, mail } from 'ionicons/icons';
 import { RouterLink } from '@angular/router';
 import { AuthheaderComponent } from 'src/app/components/authheader/authheader.component';
+import { AppHighLight } from 'src/app/directives/appHighLight/app-high-light';
 
 @Component({
   selector: 'app-login',
@@ -43,7 +44,9 @@ import { AuthheaderComponent } from 'src/app/components/authheader/authheader.co
     RouterLink,
     AuthheaderComponent,
     IonInputPasswordToggle,
+    AppHighLight,
   ],
+  hostDirectives: [AppHighLight],
 })
 export class LoginPage implements OnInit {
   isLoading: boolean = false;
